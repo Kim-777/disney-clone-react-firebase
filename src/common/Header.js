@@ -7,6 +7,7 @@ const Nav = styled.nav`
     display: flex;
     align-items: center;
     padding: 0 36px;
+    overflow-x: hidden;
 `
 
 const Logo = styled.img`
@@ -72,27 +73,27 @@ function Header() {
                 <NavMenu>
                     <a>
                         <img src="/images/home-icon.svg" alt="home-icon"/>
-                        <span>HOME</span>
+                        <span>홈</span>
                     </a>
                     <a>
                         <img src="/images/search-icon.svg" alt="search-icon"/>
-                        <span>SEARCH</span>
+                        <span>찾기</span>
                     </a>
                     <a>
                         <img src="/images/watchlist-icon.svg" alt="home-icon"/>
-                        <span>WATCH</span>
+                        <span>보기</span>
                     </a>
                     <a>
                         <img src="/images/original-icon.svg" alt="original-icon"/>
-                        <span>ORIGINALS</span>
+                        <span>오리지널 디즈니</span>
                     </a>
                     <a>
                         <img src="/images/movie-icon.svg" alt="movie-icon"/>
-                        <span>MOVIE</span>
+                        <span>영화</span>
                     </a>
                     <a>
                         <img src="/images/series-icon.svg" alt="series-icon"/>
-                        <span>SERIES</span>
+                        <span>시리즈</span>
                     </a>
                 </NavMenu>
                 <UserImg src="/images/ryan.jpg"/>
