@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ImgSlider from '../common/ImgSlider';
 import Viewers from '../common/Viewers';
-
+import Movies from '../common/Movies';
 
 const Container = styled.main`
     min-height: calc(100vh - 70px);
@@ -27,6 +27,7 @@ function Home() {
         <Container>
             <ImgSlider />
             <Viewers />
+            <Movies />
         </Container>
     )
 };
