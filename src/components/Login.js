@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const LoginContainer = styled.section`
     overflow:hidden;
-    height: 100vh; // calc(100vh - 70px);
+    height: 100vh;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -30,7 +30,7 @@ const Content = styled.div`
         height: 100%;
         position: absolute;
         content: "";
-        top: 0;
+        top: 70px;
         bottom: 0;
         left: 0;
         right: 0;

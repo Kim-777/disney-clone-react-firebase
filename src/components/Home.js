@@ -23,17 +23,7 @@ const Container = styled.main`
     }
 `;
 
-function Home() {
-
-
-
-    return (
-        <Container>
-            <ImgSlider />
-            <Viewers />
-            <Movies />
-        </Container>
-    )
-};
-
+const Home = (props) => {
+    return <div>Home</div>
+}
 export default Home;
