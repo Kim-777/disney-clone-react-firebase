@@ -1,94 +1,110 @@
-import React , { useEffect } from "react";
-import { auth, provider } from "../firebase";
+import React from "react";
 import styled from "styled-components";
-import { useHistory } from 'react-router-dom';
-import { Link } from "react-router-dom";
-import {
-    selectUserName,
-    selectUserPhoto,
-    setUserLogin,
-    setSignOut,
-} from "../features/user/userSlice";
-import { useSelector, useDispatch } from "react-redux";
+
 
 const Nav = styled.nav`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 70px;
     background: #090b13;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0 36px;
     overflow-x: hidden;
+    letter-spacing: 16px;
+    z-index: 3;
 `;
 
-const Logo = styled.img`
+const Logo = styled.a`
+    padding: 0;
     width: 80px;
+    max-height: 70px;
+    font-size: 0;
+    display: inline-block;
+
+    img {
+        display: block;
+        width: 100%;
+    }
 `;
 
 const NavMenu = styled.div`
-    display: flex;
-    flex: 1;
-    margin-left: 25px;
     align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+    justify-content: flex-end;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    margin-right: auto;
+    margin-left: 25px;
+
     a {
         display: flex;
         align-items: center;
         padding: 0 12px;
-        cursor: pointer;
 
         img {
-            height: 21px;
+            height: 20px;
+            min-width: 20px;
+            width: 20px;
+            z-index: auto;
         }
-
+        
         span {
+            color: rgb(249, 249, 249);
             font-size: 13px;
             letter-spacing: 1.42px;
+            line-height: 1.08;
+            padding: 2px 0px;
+            white-space: nowrap;
             position: relative;
 
-            &:after {
-                content: "";
-                height: 2px;
-                background: white;
-                position: absolute;
-                left: 0;
-                right: 0;
+            &:before {
+                content:"";
+                background-color: rgb(249, 249, 249);
+                border-radius: 0px 0px 4px 4px;
                 bottom: -6px;
+                height: 2px;
+                left: 0px;
                 opacity: 0;
+                position: absolute;
+                right: 0px;
                 transform-origin: left center;
-                transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
                 transform: scaleX(0);
+                transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0ms;
+                visibility: hidden;
+                width: auto;
             }
         }
 
         &:hover {
-            span:after {
+            span:before {
                 transform: scaleX(1);
+                visibility: visible;
                 opacity: 1;
             }
         }
+
     }
+
+    /* @media (max-width: 768px) {
+        display: none;
+    } */
 `;
 
-const UserImg = styled.img`
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    cursor: pointer;
-`;
-
-const CustomLink = styled(Link)`
-    text-decoration: none;
-    color: white;
-`;
-
-const LoginButton = styled.div`
-    border: 1px solid #f9f9f9;
-    padding: 8px 16px;
-    border-radius: 4px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+const Login = styled.a`
     background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px 16px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid #f9f9f9;
+    border-radius: 4px;
     transition: all 0.2s ease 0s;
-    cursor: pointer;
 
     &:hover {
         background-color: #f9f9f9;
@@ -97,112 +113,41 @@ const LoginButton = styled.div`
     }
 `;
 
-const LoginContainer = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-`;
 
-function Header() {
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const userName = useSelector(selectUserName);
-    const userPhoto = useSelector(selectUserPhoto);
-
-    useEffect(() => {
-        auth.onAuthStateChanged(async (user) => {
-            if(user) {
-                dispatch(
-                    setUserLogin({
-                        name: user.displayName,
-                        email: user.email,
-                        photo: user.photoURL,
-                    })
-                );
-                history.push('/');                
-            }
-        })
-    }, [])
-
-    const signIn = () => {
-        auth.signInWithPopup(provider)
-        .then((result) => {
-            let user = result.user;
-            dispatch(
-                setUserLogin({
-                    name: user.displayName,
-                    email: user.email,
-                    photo: user.photoURL,
-                })
-            );
-            history.push('/');
-        });
-    };
-
-    const signOut = () => {
-        auth.signOut()
-        .then(() => {
-            dispatch(setSignOut());
-            history.push('/login');
-        })
-    }
+function Header({}) {
 
     return (
         <Nav>
-            <Logo src="/images/logo.svg" />
-            {!userName ? (
-                <LoginContainer>
-                    <LoginButton onClick={signIn}>Login</LoginButton>
-                </LoginContainer>
-            ) : (
-                <>
-                    <NavMenu>
-                        <CustomLink to="/">
-                            <img src="/images/home-icon.svg" alt="home-icon" />
-                            <span>홈</span>
-                        </CustomLink>
-                        <CustomLink to="/">
-                            <img
-                                src="/images/search-icon.svg"
-                                alt="search-icon"
-                            />
-                            <span>찾기</span>
-                        </CustomLink>
-                        <CustomLink to="/">
-                            <img
-                                src="/images/watchlist-icon.svg"
-                                alt="home-icon"
-                            />
-                            <span>보기</span>
-                        </CustomLink>
-                        <CustomLink to="/">
-                            <img
-                                src="/images/original-icon.svg"
-                                alt="original-icon"
-                            />
-                            <span>오리지널 디즈니</span>
-                        </CustomLink>
-                        <CustomLink to="/">
-                            <img
-                                src="/images/movie-icon.svg"
-                                alt="movie-icon"
-                            />
-                            <span>영화</span>
-                        </CustomLink>
-                        <CustomLink to="/">
-                            <img
-                                src="/images/series-icon.svg"
-                                alt="series-icon"
-                            />
-                            <span>시리즈</span>
-                        </CustomLink>
-                    </NavMenu>
-                    <UserImg
-                        onClick={signOut}
-                        src={userPhoto} 
-                    />
-                </>
-            )}
+            <Logo>
+                <img  src="/images/logo.svg" alt="logo" />
+            </Logo>
+            <NavMenu>
+                <a href="/home">
+                    <img src="/images/home-icon.svg" alt="HOME" />
+                    <span>홈</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/search-icon.svg" alt="HOME" />
+                    <span>찾기</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/watchlist-icon.svg" alt="HOME" />
+                    <span>보기</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/original-icon.svg" alt="HOME" />
+                    <span>오리지널</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/movie-icon.svg" alt="HOME" />
+                    <span>영화</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/series-icon.svg" alt="HOME" />
+                    <span>시리즈</span>
+                </a>
+            </NavMenu>
+            <Login>Login</Login>
         </Nav>
     );
 }

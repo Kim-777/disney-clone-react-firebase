@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import db from '../firebase';
+
 
 const DetailContainer = styled.div`
     min-height: calc(100vh - 70px);
@@ -109,53 +108,9 @@ const Description = styled.div`
 
 function Detail() {
 
-    const { id } = useParams();
-    const [movie, setMovie] = useState({});
-
-    useEffect(() => {
-        // 데이터베이스에서 requrest param으로 담겨온 정보와 일치하는 데이터 가져오기
-        db.collection("movies")
-            .doc(id)
-            .get()
-            .then((doc) => {
-                if(doc.exists) {
-                    setMovie(doc.data());
-                } else {
-
-                }
-            })
-    }, [id]);
-
     return (
         <DetailContainer>
-            <Background>
-                <img src={movie.backgroundImg} alt="background"/>
-            </Background>
-            <ImageTitle>
-                <img src={movie.titleImg} alt="title" />
-            </ImageTitle>
-            <Controls>
-                <PlayButton>
-                    <img src="/images/play-icon-black.png" alt=""/>
-                    <span>PLAY</span>
-                </PlayButton>
-                <TrailerButton>
-                    <img src="/images/play-icon-white.png" alt=""/>
-                    <span>Trailer</span>
-                </TrailerButton>
-                <AddButton>
-                    <span>+</span>
-                </AddButton>
-                <GroupWatchButton>
-                    <img src="/images/group-icon.png" alt=""/>
-                </GroupWatchButton>
-            </Controls>
-            <SubTitle>
-                {movie.subTitle}
-            </SubTitle>
-            <Description>
-                {movie.description}
-            </Description>
+
         </DetailContainer>
     )
 }

@@ -1,8 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { selectMovies } from '../features/movie/movieSlice';
-import { useSelector } from 'react-redux';
 
 const MoviesContainer = styled.div`
 
@@ -40,24 +37,10 @@ const ContentWrapper = styled.div`
 
 function Movies() {
 
-    const movies = useSelector(selectMovies);
-
-    console.log("This is movies", movies);
 
     return (
         <MoviesContainer>
             <h4>당신을 위한 추천 영화</h4>
-            <Content>
-                { movies && 
-                    movies.map((movie) => (
-                        <ContentWrapper key={movie.id}>
-                            <Link to={`/detail/${movie.id}`}>
-                                <img src={movie.cardImg} alt={movie.title} />
-                            </Link>
-                        </ContentWrapper>
-                    ))
-                }
-            </Content>
         </MoviesContainer>
     )
 }
