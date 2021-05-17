@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import db from '../firebase';
 
 const DetailContainer = styled.div`
     min-height: calc(100vh - 70px);
@@ -106,13 +108,31 @@ const Description = styled.div`
 `;
 
 function Detail() {
+
+    const { id } = useParams();
+    const [movie, setMovie] = useState({});
+
+    useEffect(() => {
+        // 데이터베이스에서 requrest param으로 담겨온 정보와 일치하는 데이터 가져오기
+        db.collection("movies")
+            .doc(id)
+            .get()
+            .then((doc) => {
+                if(doc.exists) {
+                    setMovie(doc.data());
+                } else {
+
+                }
+            })
+    }, [id]);
+
     return (
         <DetailContainer>
             <Background>
-                <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F39B7E16726ECF419DD7C49E011DD95099AA20A962B0B10AA1881A70661CE45/scale?width=1440&aspectRatio=1.78&format=jpeg" alt=""/>
+                <img src={movie.backgroundImg} alt="background"/>
             </Background>
             <ImageTitle>
-                <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78" alt="" />
+                <img src={movie.titleImg} alt="title" />
             </ImageTitle>
             <Controls>
                 <PlayButton>
@@ -131,10 +151,10 @@ function Detail() {
                 </GroupWatchButton>
             </Controls>
             <SubTitle>
-                2018 . 7m . Family, Fantasy, Kids, Animation
+                {movie.subTitle}
             </SubTitle>
             <Description>
-                ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsumipsum ipsum ipsum
+                {movie.description}
             </Description>
         </DetailContainer>
     )
