@@ -9,6 +9,7 @@ import {
     setSignOutState,
     setUserLoginDetails,
 } from "../features/user/userSlice";
+import { Link } from 'react-router-dom';
 
 const Nav = styled.nav`
     position: fixed;
@@ -214,7 +215,9 @@ function Header({}) {
     return (
         <Nav>
             <Logo>
-                <img src="/images/logo.svg" alt="logo" />
+                <Link to="/">
+                    <img src="/images/logo.svg" alt="logo" />
+                </Link>
             </Logo>
 
             {!userName ? (
