@@ -20,26 +20,54 @@ const Carousel = styled(Slider)`
     }
 
     .slick-list {
-        overflow: visible;
+        overflow: initial;
     }
 
-    button {
+    .slick-prev {
+        left: -75px;
+    }
+
+    .slick-next {
+        right: -75px;
+    }
+
+    & > button {
         z-index: 1;
+        opacity: 0;
+        height: 100%;
+        width: 5vw;
+
+        &:hover {
+            opacity: 1;
+            transition: opacity 0.2s ease 0s;
+        }
     }
 
 `;
 
-const Wrap =styled.div`
+const Wrap = styled.div`
 
     cursor: pointer;
+    border-radius: 4px;
+    position: relative;
 
-    img {
+    a {
         width: 100%;
         height: 100%;
         border-radius: 10px;
         border: 4px solid transparent;
         box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px, rgb(0 0 0 / 73%) 0px 16px 10px -10px;
+        display: block;
+        padding: 4px;
+        cursor: pointer;
+        position: relative;
         transition-duration: 300ms;
+
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
 
         &:hover {
             border: 4px solid rgba(249, 249, 249, 0.8);
@@ -62,16 +90,24 @@ function ImgSlider() {
     return (
         <Carousel {...settings}>
             <Wrap>
-                <img src="/images/slider-badging.jpg" alt=""/>
+                <a>
+                    <img src="/images/slider-badging.jpg" alt=""/>
+                </a>
             </Wrap>
             <Wrap>
-                <img src="/images/slider-badag.jpg" alt=""/>
+                <a>
+                    <img src="/images/slider-badag.jpg" alt=""/>
+                </a>
             </Wrap>
             <Wrap>
-                <img src="/images/slider-scale.jpg" alt=""/>
+                <a>
+                    <img src="/images/slider-scale.jpg" alt=""/>
+                </a>
             </Wrap>
             <Wrap>
-                <img src="/images/slider-scales.jpg" alt=""/>
+                <a>
+                    <img src="/images/slider-scales.jpg" alt=""/>
+                </a>
             </Wrap>
         </Carousel>
     )

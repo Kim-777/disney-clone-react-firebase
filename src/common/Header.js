@@ -95,7 +95,7 @@ const NavMenu = styled.div`
                 visibility: visible;
                 opacity: 1;
             }
-        }
+}
     }
 
     @media (max-width: 768px) {

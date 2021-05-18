@@ -1,29 +1,86 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ImgSlider from '../common/ImgSlider';
 import Viewers from '../common/Viewers';
-import Movies from '../common/Movies';
-
+import Recommends from '../common/Recommends';
+import NewDisney from '../common/NewDisney';
+import Originals from '../common/Originals';
+import Trending from '../common/Trending';
+import { useDispatch, useSelector } from 'react-redux';
+import db from '../firebase';
+import { setMovies } from '../features/movie/movieSlice';
+import { selectUserName } from '../features/user/userSlice';
 
 const Container = styled.main`
-    min-height: calc(100vh - 70px);
-    padding: 0 calc(3.5vw + 5px);
     position: relative;
+    min-height: calc(100vh - 250px);
     overflow-x: hidden;
+    display: block;
+    top: 72px;
+    padding: 0 calc(3.5vw + 5px);
 
-    &:before {
+
+    &:after {
         background: url("/images/home-background.png") center center / cover no-repeat fixed;
-        content: "";
+        content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1; // 뒤에 배치시켜 콘첸츠가 보이게 함
+        inset: 0px;
+        opacity: 1;
+        z-index: -1;
     }
 `;
 
 const Home = (props) => {
-    return <div>Home</div>
+
+    const dispatch = useDispatch();
+    const userName = useSelector(selectUserName);
+    let recommends = [];
+    let newDisneys = [];
+    let originals = [];
+    let trending = [];
+
+    useEffect(() => {
+        db.collection('movies').onSnapshot((snapshot) => {
+            snapshot.docs.map((doc) => {
+                switch(doc.data().type) {
+                    case 'recommend' :
+                        recommends = [...recommends, {id: doc.id, ...doc.data()}];
+                        break;
+                    case 'new' :
+                        newDisneys = [...newDisneys, {id: doc.id, ...doc.data()}];
+                        break;
+                    case 'original' :
+                        originals = [...originals, {id: doc.id, ...doc.data()}];
+                        break;
+                    case 'trending' :
+                        trending = [...trending, {id: doc.id, ...doc.data()}];
+                        break;
+                    default :
+                        break;
+                }
+                return null;
+            });
+            console.log(recommends) ;  
+            dispatch(setMovies({
+                recommend: recommends,
+                newDisney: newDisneys,
+                original: originals,
+                trending: trending,
+            }))
+        });
+            
+
+    }, [userName]);
+
+    return (
+        <Container>
+            <ImgSlider />
+            <Viewers />
+            <Recommends />
+            <NewDisney />
+            <Originals />
+            <Trending />
+        </Container>
+    )
 }
 export default Home;
